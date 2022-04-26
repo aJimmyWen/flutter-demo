@@ -177,7 +177,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 try {
                   // create instance
                   var dioRequest = dio.Dio();
-                  dioRequest.options.baseUrl = 'http://172.20.10.3:4000';
+                  dioRequest.options.baseUrl = apiBaseUrl;
 
                   //  add token
                   dioRequest.options.headers = {
