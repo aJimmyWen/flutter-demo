@@ -3,6 +3,7 @@ import 'package:select_form_field/select_form_field.dart';
 import 'package:dio/dio.dart' as dio;
 import 'dart:convert';
 import 'helpers/Constants.dart';
+import 'pages/UserList.dart';
 
 final List<Map<String, dynamic>> _roleItems = [
   {
@@ -202,6 +203,9 @@ class _RegisterFormState extends State<RegisterForm> {
                 } catch (err) {
                   print('error: $err');
                 }
+
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const MyTable()));
               },
               child: const Text('Submit'),
             ),
