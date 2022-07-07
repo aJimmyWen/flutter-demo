@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:select_form_field/select_form_field.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart' as dio;
+import 'dart:convert';
 import 'helpers/Constants.dart';
+import 'pages/UserList.dart';
 
 final List<Map<String, dynamic>> _roleItems = [
   {
@@ -166,12 +168,44 @@ class _RegisterFormState extends State<RegisterForm> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 // Validate will return true if the form is valid, or false if
                 // the form is invalid.
                 if (_formKey.currentState!.validate()) {
                   // Process data.
                 }
+
+                try {
+                  // create instance
+                  var dioRequest = dio.Dio();
+                  dioRequest.options.baseUrl = apiBaseUrl;
+
+                  //  add token
+                  dioRequest.options.headers = {
+                    'Authorization': '<IF-YOU-NEED-ADD-TOKEN-HERE>',
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                  };
+
+                  // create form data
+                  var formData = dio.FormData.fromMap({
+                    'account': _accountController.text,
+                    'password': _passwordController.text,
+                    'email': _emailController.text,
+                    'gender': _genderValue,
+                    'role': _accountRole
+                  });
+
+                  var response = await dioRequest.post('/', data: formData);
+
+                  final result = json.decode(response.toString())['result'];
+
+                  print(result);
+                } catch (err) {
+                  print('error: $err');
+                }
+
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const MyTable()));
               },
               child: const Text('Submit'),
             ),
